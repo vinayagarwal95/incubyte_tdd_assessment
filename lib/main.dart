@@ -1,22 +1,23 @@
 import 'string_add.dart';
+import 'dart:io';
+
 void main() {
   final calculator = StringCalculator();
 
-  print(calculator.add(""));                // 0
-  print(calculator.add("1"));               // 1
-  print(calculator.add("1,2,3"));           // 6
-  print(calculator.add("1\n2,3"));          // 6
-  print(calculator.add("//;\n1;2;3"));      // 6
+  while (true) {
+    stdout.write("Enter numbers (or type 'exit' to quit): ");
+    String? input = stdin.readLineSync();
 
-  try {
-    print(calculator.add("1,-2,3"));       // Exception: Negative numbers not allowed: -2
-  } catch (e) {
-    print(e);
-  }
+    if (input == null || input.toLowerCase() == 'exit') {
+      print("Exiting...");
+      break;
+    }
 
-  try {
-    print(calculator.add("1,a,3"));        // Exception: Invalid input: Mixed characters and numbers are not allowed.
-  } catch (e) {
-    print(e);
+    try {
+      int result = calculator.add(input);
+      print("Result: $result");
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 }
