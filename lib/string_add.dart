@@ -28,4 +28,33 @@ int add(String numbers) {
     }
   }
 
+// Create a regular expression to split on any of the delimiters.
+  String pattern = delimiters.map((d) => RegExp.escape(d)).join("|");
+  RegExp regExp = RegExp(pattern);
+
+  // Split the numbers string using the constructed regex.
+  List<String> tokens = numbersPart.split(regExp);
+
+  List<int> nums = [];
+  List<int> negatives = [];
+
+  for (String token in tokens) {
+    // Skip empty tokens (in case of extra delimiters).
+    if (token.trim().isEmpty) continue;
+
+    // Convert the token to an integer.
+    int num = int.parse(token.trim());
+    if (num < 0) {
+      negatives.add(num);
+    }
+    nums.add(num);
+  }
+
+  // If there are any negative numbers, throw an exception listing them.
+  if (negatives.isNotEmpty) {
+    throw Exception("negative numbers not allowed " + negatives.join(","));
+  }
+
+  // Return the sum of the numbers.
+  return nums.fold(0, (sum, element) => sum + element);
 }
